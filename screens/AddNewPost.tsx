@@ -1,18 +1,23 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { useHeaderHeight } from '@react-navigation/elements';
+
+import COLORS from '../styles/colors';
+import NewPostForm from '../components/NewPostForm';
 
 const AddNewPost = () => {
+  const headerHeight = useHeaderHeight();
+
   return (
-    <View style={styles.container}>
-      <Text style={styles.text}>Add New Post</Text>
-    </View>
+    <ScrollView style={[styles.container, { paddingTop: headerHeight }]}>
+      <NewPostForm />
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    backgroundColor: COLORS.dark700,
   },
   text: {
     fontSize: 18,

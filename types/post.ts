@@ -7,5 +7,6 @@ export interface IPost {
   id: string
   name: string
   image: string
-  location: ILocation
+  location: string,
+  coordinates: ILocation
 }

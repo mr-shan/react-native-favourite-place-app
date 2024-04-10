@@ -6,6 +6,7 @@ import {
   Image,
   KeyboardAvoidingView,
   Pressable,
+  Alert,
 } from 'react-native';
 import { useState } from 'react';
 import * as ImagePicker from 'expo-image-picker';
@@ -14,11 +15,33 @@ import COLORS from '../styles/colors';
 import IconButton from './common/IconButton';
 
 const NewPostForm = () => {
+  const [permissionStatus, requestPermission] =
+    ImagePicker.useCameraPermissions();
   const [image, setImage] = useState<ImagePicker.ImagePickerAsset | null>(null);
 
-  const pickImageHandler = async () => {
+  const askForPermission = async () => {
+    if (permissionStatus?.granted) return true;
+    if (permissionStatus?.status === ImagePicker.PermissionStatus.DENIED)
+      return false;
+
     try {
-      const image = await ImagePicker.launchImageLibraryAsync({
+      const hasPermission = await requestPermission();
+      return hasPermission.status === ImagePicker.PermissionStatus.GRANTED;
+    } catch (error) {
+      console.error(error);
+      return false;
+    }
+  };
+
+  const pickImageHandler = async () => {
+    const hasPermission = await askForPermission();
+    if (!hasPermission) {
+      Alert.alert('Failed to capture image', 'Permission is denied to access the camera');
+      return;
+    }
+
+    try {
+      const image = await ImagePicker.launchCameraAsync({
         mediaTypes: ImagePicker.MediaTypeOptions.All,
         allowsEditing: true,
         quality: 0.5,
@@ -126,6 +149,6 @@ const styles = StyleSheet.create({
     zIndex: 10,
     borderRadius: 16,
     padding: 5,
-    opacity: 0.7
-  }
+    opacity: 0.7,
+  },
 });

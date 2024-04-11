@@ -6,6 +6,7 @@ import { Platform } from 'react-native';
 import AllPosts from './screens/AllPosts';
 import AddNewPost from './screens/AddNewPost';
 import PostDetails from './screens/PostDetails';
+import MapViewLocationSelector from './screens/MapViewLocationSelector';
 
 import COLORS from './styles/colors';
 import IconButton from './components/common/IconButton';
@@ -33,7 +34,10 @@ export default function App() {
               return {
                 title: 'All Posts',
                 headerTransparent: true,
-                headerStyle: { backgroundColor: Platform.OS === 'ios' ? 'transparent' : COLORS.dark500 },
+                headerStyle: {
+                  backgroundColor:
+                    Platform.OS === 'ios' ? 'transparent' : COLORS.dark500,
+                },
                 headerBlurEffect: 'dark',
                 headerRight: (props) => (
                   <IconButton
@@ -53,9 +57,27 @@ export default function App() {
             options={{
               title: 'New Post',
               headerTransparent: true,
-              headerStyle: { backgroundColor: Platform.OS === 'ios' ? 'transparent' : COLORS.dark500 },
+              headerStyle: {
+                backgroundColor:
+                  Platform.OS === 'ios' ? 'transparent' : COLORS.dark500,
+              },
               headerBlurEffect: 'dark',
               headerBackTitleVisible: false,
+            }}
+          />
+          <RootStack.Screen
+            component={MapViewLocationSelector}
+            name='MapViewLocationSelector'
+            options={{
+              title: 'Select Location',
+              headerTransparent: true,
+              headerStyle: {
+                backgroundColor:
+                  Platform.OS === 'ios' ? 'transparent' : COLORS.dark500,
+              },
+              headerBlurEffect: 'dark',
+              headerBackTitleVisible: false,
+              presentation: 'modal',
             }}
           />
         </RootStack.Navigator>

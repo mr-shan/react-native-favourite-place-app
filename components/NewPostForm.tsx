@@ -4,21 +4,27 @@ import {
   Text,
   TextInput,
   KeyboardAvoidingView,
+  ScrollView,
 } from 'react-native';
 import { useState } from 'react';
 import { ActionSheetProvider } from '@expo/react-native-action-sheet';
 
 import COLORS from '../styles/colors';
 import ImagePickerForm from './ImagePicker';
+import LocationPicker from './LocationPicker';
 
-const NewPostForm = () => {
+interface IProps {
+  mapImageUri: string;
+}
+
+const NewPostForm = (props: IProps) => {
   const [name, setName] = useState({
     value: '',
     isValid: false,
   });
   return (
     <ActionSheetProvider>
-      <View style={styles.container}>
+      <ScrollView style={styles.container}>
         <KeyboardAvoidingView>
           <View style={styles.inputContainer}>
             <Text style={styles.label}>Name</Text>
@@ -34,8 +40,9 @@ const NewPostForm = () => {
             />
           </View>
           <ImagePickerForm />
+          <LocationPicker mapImageUri={props.mapImageUri} />
         </KeyboardAvoidingView>
-      </View>
+      </ScrollView>
     </ActionSheetProvider>
   );
 };

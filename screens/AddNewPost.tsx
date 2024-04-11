@@ -3,13 +3,28 @@ import { useHeaderHeight } from '@react-navigation/elements';
 
 import COLORS from '../styles/colors';
 import NewPostForm from '../components/NewPostForm';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { Route } from '@react-navigation/native';
+import { useEffect, useState } from 'react';
 
-const AddNewPost = () => {
+interface IProps {
+  navigation: NativeStackNavigationProp<any>;
+  route: Route<any>
+}
+
+const AddNewPost = (props: IProps) => {
   const headerHeight = useHeaderHeight();
+  const [mapImageUri, setMapImageUri] = useState('');
+
+  useEffect(() => {
+    if (props.route.params?.imageUri) {
+      setMapImageUri(props.route.params.imageUri)
+    }
+  }, [props.navigation, props.route])
 
   return (
     <ScrollView style={[styles.container, { paddingTop: headerHeight }]}>
-      <NewPostForm />
+      <NewPostForm mapImageUri={mapImageUri}/>
     </ScrollView>
   );
 };

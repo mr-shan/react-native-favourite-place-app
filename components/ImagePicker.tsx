@@ -48,8 +48,10 @@ const ImagePickerForm = () => {
 
       if (operationType === 0) {
         image = await ImagePicker.launchCameraAsync(options);
-      } else {
+      } else if (operationType === 1) {
         image = await ImagePicker.launchImageLibraryAsync(options);
+      } else {
+        return;
       }
 
       if (image.canceled) {

@@ -1,40 +1,24 @@
-import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { useContext } from 'react';
+import { StyleSheet, View, Text } from 'react-native';
 
 import COLORS from '../styles/colors';
 import PostList from '../components/PostList';
-import { IPost } from '../types/post';
+import { AppContext } from '../store/context';
 
 const AllPosts = () => {
-  const posts: IPost[] = [
-    {
-      id: 'p1',
-      name: 'First Post',
-      location: 'Kharadi, Pune',
-      coordinates: { latitude: '', longitude: '' },
-      image:
-        'https://cdn.evopresse.ca/content/user_files/sites/2/2023/04/21001719/COuellet_Everest-1.jpg',
-    },
-    {
-      id: 'p2',
-      name: 'First Post',
-      location: 'Kharadi, Pune',
-      coordinates: { latitude: '', longitude: '' },
-      image:
-        'https://cdn.evopresse.ca/content/user_files/sites/2/2023/04/21001719/COuellet_Everest-1.jpg',
-    },
-    {
-      id: 'p3',
-      name: 'First Post',
-      location: 'Kharadi, Pune',
-      coordinates: { latitude: '', longitude: '' },
-      image:
-        'https://cdn.evopresse.ca/content/user_files/sites/2/2023/04/21001719/COuellet_Everest-1.jpg',
-    },
-  ];
+  const context = useContext(AppContext)
+  if (context.favoritePlaces.length === 0) {
+    return (
+      <View style={[styles.container, { paddingTop: 120, gap: 10 }]}>
+        <Text style={styles.noPlacesFoundText}>No favorite place added yet!</Text>
+        <Text style={styles.noPlacesFoundText}>Start adding some 😀</Text>
+      </View>
+    )
+  }
   return (
     <View style={styles.container}>
       <View>
-        <PostList posts={posts} />
+        <PostList posts={context.favoritePlaces} />
       </View>
     </View>
   );
@@ -45,9 +29,10 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: COLORS.dark500,
   },
-  text: {
-    fontSize: 18,
-    color: COLORS.secondary500,
+  noPlacesFoundText: {
+    fontSize: 16,
+    color: COLORS.light300,
+    textAlign: 'center'
   },
 });
 

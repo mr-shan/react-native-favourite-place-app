@@ -11,11 +11,13 @@ import MapViewLocationSelector from './screens/MapViewLocationSelector';
 import COLORS from './styles/colors';
 import IconButton from './components/common/IconButton';
 
+import ContextProvider from './store/context';
+
 const RootStack = createNativeStackNavigator();
 
 export default function App() {
   return (
-    <>
+    <ContextProvider>
       <StatusBar style='light' />
       <NavigationContainer>
         <RootStack.Navigator
@@ -82,6 +84,6 @@ export default function App() {
           />
         </RootStack.Navigator>
       </NavigationContainer>
-    </>
+    </ContextProvider>
   );
 }

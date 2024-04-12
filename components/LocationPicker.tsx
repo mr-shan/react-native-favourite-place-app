@@ -12,16 +12,16 @@ import { useState } from 'react';
 import * as Location from 'expo-location';
 
 import COLORS from '../styles/colors';
+import IconButton from './common/IconButton';
 
 interface IProps {
   mapImageUri: string;
+  location: Location.LocationObject | null;
+  onPickLocation: (location: Location.LocationObject | null) => void;
 }
 
 const LocationPicker = (props: IProps) => {
   const navigation = useNavigation();
-  const [location, setLocation] = useState<Location.LocationObject | null>(
-    null
-  );
   const [isLoading, setIsLoading] = useState(false);
 
   const getLocation = async () => {
@@ -36,7 +36,7 @@ const LocationPicker = (props: IProps) => {
       let location = await Location.getCurrentPositionAsync({
         accuracy: Location.LocationAccuracy.Highest,
       });
-      setLocation(location);
+      props.onPickLocation(location);
       return { lat: location.coords.latitude, long: location.coords.longitude };
     } catch (error) {
       console.error(error);
@@ -48,7 +48,6 @@ const LocationPicker = (props: IProps) => {
 
   const onPressLocation = async () => {
     const coordinates = await getLocation();
-    console.log(coordinates);
     navigation.navigate('MapViewLocationSelector', {
       coordinates: coordinates,
     });
@@ -67,13 +66,22 @@ const LocationPicker = (props: IProps) => {
             style={styles.locationPickerButton}
             onPress={onPressLocation}
           >
-            {isLoading && <ActivityIndicator style={{marginBottom: 10}}/>}
+            {isLoading && <ActivityIndicator style={{ marginBottom: 10 }} />}
             <Text style={{ color: COLORS.light500 }}>{label}</Text>
           </Pressable>
         </View>
       )}
       {props.mapImageUri && (
-        <Image style={styles.image} source={{ uri: props.mapImageUri }} />
+        <View>
+          <IconButton
+            name='close-sharp'
+            onPress={() => props.onPickLocation(null)}
+            color={COLORS.light300}
+            size={20}
+            style={styles.removeImageBtn}
+          />
+          <Image style={styles.image} source={{ uri: props.mapImageUri }} />
+        </View>
       )}
     </View>
   );
@@ -85,7 +93,6 @@ const styles = StyleSheet.create({
     height: 300,
     overflow: 'hidden',
     justifyContent: 'center',
-    // alignItems: 'center',
     marginTop: 10,
   },
   locationPickerButton: {
@@ -97,6 +104,16 @@ const styles = StyleSheet.create({
   image: {
     height: 300,
     width: '100%',
+  },
+  removeImageBtn: {
+    position: 'absolute',
+    right: 6,
+    top: 6,
+    backgroundColor: COLORS.dark300,
+    zIndex: 10,
+    borderRadius: 16,
+    padding: 5,
+    opacity: 0.7,
   },
 });
 

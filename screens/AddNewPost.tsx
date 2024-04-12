@@ -23,7 +23,8 @@ const AddNewPost = (props: IProps) => {
   }, [props.navigation, props.route])
 
   return (
-    <ScrollView style={[styles.container, { paddingTop: headerHeight }]}>
+    <ScrollView style={styles.container}>
+      <View style={{height: headerHeight}}></View>
       <NewPostForm mapImageUri={mapImageUri}/>
     </ScrollView>
   );

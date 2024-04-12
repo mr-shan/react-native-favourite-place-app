@@ -6,11 +6,15 @@ import { useActionSheet } from '@expo/react-native-action-sheet';
 import COLORS from '../styles/colors';
 import IconButton from './common/IconButton';
 
-const ImagePickerForm = () => {
+interface IProps {
+  image: ImagePicker.ImagePickerAsset | null
+  onPickImage: (image: ImagePicker.ImagePickerAsset | null) => void
+}
+
+const ImagePickerForm = (props: IProps) => {
   const { showActionSheetWithOptions } = useActionSheet();
   const [permissionStatus, requestPermission] =
     ImagePicker.useCameraPermissions();
-  const [image, setImage] = useState<ImagePicker.ImagePickerAsset | null>(null);
 
   const askForPermission = async () => {
     if (permissionStatus?.granted) return true;
@@ -65,6 +69,10 @@ const ImagePickerForm = () => {
     }
   };
 
+  const setImage = (image: ImagePicker.ImagePickerAsset | null) => {
+    props.onPickImage(image);
+  }
+
   const onPress = () => {
     const options = ['Take a picture', 'Select a photo from gallery', 'Cancel'];
     const cancelButtonIndex = 2;
@@ -80,7 +88,7 @@ const ImagePickerForm = () => {
 
   return (
     <View style={styles.imagePickerContainer}>
-      {!image && (
+      {!props.image && (
         <View style={{ flex: 1 }}>
           <Pressable
             android_ripple={{ color: COLORS.dark300 }}
@@ -91,7 +99,7 @@ const ImagePickerForm = () => {
           </Pressable>
         </View>
       )}
-      {image && (
+      {props.image && (
         <View>
           <IconButton
             name='close-sharp'
@@ -100,7 +108,7 @@ const ImagePickerForm = () => {
             size={20}
             style={styles.removeImageBtn}
           />
-          <Image style={styles.image} source={{ uri: image.uri }} />
+          <Image style={styles.image} source={{ uri: props.image.uri }} />
         </View>
       )}
     </View>

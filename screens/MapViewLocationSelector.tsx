@@ -64,10 +64,6 @@ const MapViewLocationSelector = (props: IProps) => {
     latitudeDelta: coordinate ? 0.005 : 0.1,
   } as Region;
 
-  useEffect(() => {
-    console.log(mapRef?.takeSnapshot)
-  }, [mapRef])
-
   useLayoutEffect(() => {
     props.navigation.setOptions({
       headerRight: (props) => (
@@ -90,6 +86,7 @@ const MapViewLocationSelector = (props: IProps) => {
         zoomControlEnabled={true}
         onPress={selectLocationHandler}
         maxZoomLevel={zoomLevel}
+
       >
         <Marker
           draggable

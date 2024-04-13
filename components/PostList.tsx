@@ -22,16 +22,6 @@ const PostList = (props: IProps) => {
     console.log(postId);
   };
 
-  if (props.posts.length === 0) {
-    return (
-      <View style={styles.container}>
-        <Text style={styles.noPostText}>
-          No post found. Start by adding some!
-        </Text>
-      </View>
-    );
-  }
-
   return (
     <FlatList
       data={props.posts}
@@ -47,13 +37,6 @@ const PostList = (props: IProps) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: COLORS.dark500,
-  },
-  noPostText: {
-    fontSize: 16,
-    color: COLORS.light300,
   },
 });
 

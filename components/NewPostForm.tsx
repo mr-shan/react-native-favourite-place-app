@@ -8,7 +8,7 @@ import {
   Alert,
   Pressable,
 } from 'react-native';
-import { useState, useCallback, useContext } from 'react';
+import { useState } from 'react';
 import { ActionSheetProvider } from '@expo/react-native-action-sheet';
 import * as ImagePicker from 'expo-image-picker';
 import * as Location from 'expo-location';
@@ -17,16 +17,20 @@ import COLORS from '../styles/colors';
 import ImagePickerForm from './ImagePicker';
 import LocationPicker from './LocationPicker';
 
-import { AppContext } from '../store/context';
+import { IPost } from '../types/post';
 
 interface IProps {
   mapImageUri: string;
+  onAddNewPlace: (payload: IPost) => void;
 }
 
 const NewPostForm = (props: IProps) => {
-  const context = useContext(AppContext);
 
   const [name, setName] = useState({
+    value: '',
+    isValid: false,
+  });
+  const [addressString, setAddressString] = useState({
     value: '',
     isValid: false,
   });
@@ -45,7 +49,7 @@ const NewPostForm = (props: IProps) => {
 
   const submitHandler = () => {
     if (image && location && name.value && props.mapImageUri) {
-      context.addNewPlace({
+      props.onAddNewPlace({
         id: Date.now().toString(),
         name: name.value,
         image: image.uri,
@@ -53,10 +57,9 @@ const NewPostForm = (props: IProps) => {
           latitude: location.coords.latitude,
           longitude: location.coords.longitude,
         },
-        location: '',
+        location: addressString.value,
         locationSnapShot: props.mapImageUri,
       });
-      
     } else {
       Alert.alert(
         'Invalid place data',
@@ -78,7 +81,20 @@ const NewPostForm = (props: IProps) => {
               autoCorrect={false}
               value={name.value}
               onChangeText={(text: string) =>
-                setName({ isValid: true, value: text.trim() })
+                setName({ isValid: true, value: text })
+              }
+            />
+          </View>
+          <View style={[styles.inputContainer, { marginTop: 0}]}>
+            <Text style={styles.label}>Address</Text>
+            <TextInput
+              style={styles.textInput}
+              autoCapitalize='none'
+              autoComplete='off'
+              autoCorrect={false}
+              value={addressString.value}
+              onChangeText={(text: string) =>
+                setAddressString({ isValid: true, value: text })
               }
             />
           </View>
@@ -109,7 +125,6 @@ const styles = StyleSheet.create({
   inputContainer: {
     paddingVertical: 10,
     gap: 10,
-    marginBottom: 10,
   },
   label: {
     color: COLORS.light300,

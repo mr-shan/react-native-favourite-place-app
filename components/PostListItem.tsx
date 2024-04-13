@@ -1,4 +1,4 @@
-import { StyleSheet, View, Text, Image, Pressable } from 'react-native';
+import { StyleSheet, View, Text, Image, Pressable, Platform } from 'react-native';
 
 import GLOBAL_STYLES from './../styles/styles';
 
@@ -16,7 +16,11 @@ const PostListItem = (props: IProps) => {
   };
   return (
     <View style={styles.container}>
-      <Pressable onPress={onPressHandler}>
+      <Pressable
+        onPress={onPressHandler}
+        android_ripple={{ color: COLORS.dark300 }}
+        style={({ pressed }) => (pressed ? { opacity: 0.8 } : {})}
+      >
         <Image style={styles.image} source={{ uri: props.post.image }} />
         <View style={styles.header}>
           <Text style={styles.title}>{props.post.name}</Text>
@@ -32,13 +36,7 @@ export default PostListItem;
 const styles = StyleSheet.create({
   container: {
     borderRadius: GLOBAL_STYLES.borderRadius.sm,
-    elevation: GLOBAL_STYLES.elevation,
-    ...GLOBAL_STYLES.iosShadow,
-    padding: 10,
-    overflow: 'hidden',
-    backgroundColor: COLORS.light500,
-    margin: 4,
-    marginBottom: 1,
+    marginBottom: 10,
   },
   image: {
     width: '100%',
@@ -46,16 +44,26 @@ const styles = StyleSheet.create({
     borderRadius: GLOBAL_STYLES.borderRadius.xs,
   },
   header: {
-    paddingTop: 10,
-    gap: 1
+    gap: 1,
+    padding: 10,
+    backgroundColor: COLORS.dark300,
+    elevation: 10,
+    ...GLOBAL_STYLES.iosShadow,
+    borderBottomColor: COLORS.dark700,
+    borderTopColor: COLORS.dark700,
+    borderBottomWidth: 1,
+    borderTopWidth: 1,
   },
   title: {
     fontSize: GLOBAL_STYLES.fontSizeMd,
     fontWeight: 'bold',
-    color: COLORS.dark500,
+    color: COLORS.primary500,
+    textAlign: 'center',
+    letterSpacing: 1.2
   },
   description: {
     fontSize: GLOBAL_STYLES.fontSizeSm,
-    color: COLORS.dark500,
+    color: COLORS.light300,
+    textAlign: 'center',
   },
 });

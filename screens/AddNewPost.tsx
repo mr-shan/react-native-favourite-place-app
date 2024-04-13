@@ -5,16 +5,28 @@ import COLORS from '../styles/colors';
 import NewPostForm from '../components/NewPostForm';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { Route } from '@react-navigation/native';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
+import { IPost } from '../types/post';
+import { AppContext } from '../store/context';
+
+interface IRouteParams {
+  imageUri: string
+}
 
 interface IProps {
   navigation: NativeStackNavigationProp<any>;
-  route: Route<any>
+  route: Route<string, IRouteParams>
 }
 
 const AddNewPost = (props: IProps) => {
+  const context = useContext(AppContext);
   const headerHeight = useHeaderHeight();
   const [mapImageUri, setMapImageUri] = useState('');
+
+  const addNewPlaceHandler = (payload: IPost) => {
+    context.addNewPlace(payload);
+    props.navigation.navigate('AllPosts');
+  }
 
   useEffect(() => {
     if (props.route.params?.imageUri) {
@@ -25,7 +37,7 @@ const AddNewPost = (props: IProps) => {
   return (
     <ScrollView style={styles.container}>
       <View style={{height: headerHeight}}></View>
-      <NewPostForm mapImageUri={mapImageUri}/>
+      <NewPostForm mapImageUri={mapImageUri} onAddNewPlace={addNewPlaceHandler} />
     </ScrollView>
   );
 };

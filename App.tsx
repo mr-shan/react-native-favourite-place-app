@@ -1,7 +1,9 @@
+import { useEffect, useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { Platform } from 'react-native';
+import { Alert, Platform } from 'react-native';
+import * as SplashScreen from 'expo-splash-screen';
 
 import AllPosts from './screens/AllPosts';
 import AddNewPost from './screens/AddNewPost';
@@ -12,10 +14,21 @@ import COLORS from './styles/colors';
 import IconButton from './components/common/IconButton';
 
 import ContextProvider from './store/context';
+import { initDb } from './store/db';
 
 const RootStack = createNativeStackNavigator();
 
+// Keep the splash screen visible while we fetch resources
+SplashScreen.preventAutoHideAsync();
+
 export default function App() {
+  useEffect(() => {
+    initDb()
+    .then((value: boolean) => {
+      SplashScreen.hideAsync();
+    })
+  }, [])
+
   return (
     <ContextProvider>
       <StatusBar style='light' />

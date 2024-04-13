@@ -8,6 +8,7 @@ import { Route } from '@react-navigation/native';
 import { useContext, useEffect, useState } from 'react';
 import { IPost } from '../types/post';
 import { AppContext } from '../store/context';
+import { addPlace } from '../store/db';
 
 interface IRouteParams {
   imageUri: string
@@ -24,8 +25,9 @@ const AddNewPost = (props: IProps) => {
   const [mapImageUri, setMapImageUri] = useState('');
 
   const addNewPlaceHandler = (payload: IPost) => {
-    context.addNewPlace(payload);
-    props.navigation.navigate('AllPosts');
+    addPlace(payload).then(() => {
+      props.navigation.navigate('AllPosts');
+    })
   }
 
   useEffect(() => {

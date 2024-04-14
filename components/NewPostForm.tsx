@@ -50,7 +50,7 @@ const NewPostForm = (props: IProps) => {
   const submitHandler = () => {
     if (image && location && name.value && props.mapImageUri) {
       props.onAddNewPlace({
-        id: Date.now().toString(),
+        id: 1,
         name: name.value,
         image: image.uri,
         coordinates: {

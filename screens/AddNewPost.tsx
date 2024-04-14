@@ -4,10 +4,9 @@ import { useHeaderHeight } from '@react-navigation/elements';
 import COLORS from '../styles/colors';
 import NewPostForm from '../components/NewPostForm';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { Route } from '@react-navigation/native';
-import { useContext, useEffect, useState } from 'react';
+import { RouteProp } from '@react-navigation/native';
+import { useEffect, useState } from 'react';
 import { IPost } from '../types/post';
-import { AppContext } from '../store/context';
 import { addPlace } from '../store/db';
 
 interface IRouteParams {
@@ -16,11 +15,10 @@ interface IRouteParams {
 
 interface IProps {
   navigation: NativeStackNavigationProp<any>;
-  route: Route<string, IRouteParams>
+  route: RouteProp<any>
 }
 
 const AddNewPost = (props: IProps) => {
-  const context = useContext(AppContext);
   const headerHeight = useHeaderHeight();
   const [mapImageUri, setMapImageUri] = useState('');
 

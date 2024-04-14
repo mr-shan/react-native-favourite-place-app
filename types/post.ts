@@ -4,7 +4,7 @@ export interface ILocation {
 }
 
 export interface IPost {
-  id: string
+  id: number
   name: string
   image: string
   location: string

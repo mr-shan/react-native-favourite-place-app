@@ -23,11 +23,10 @@ SplashScreen.preventAutoHideAsync();
 
 export default function App() {
   useEffect(() => {
-    initDb()
-    .then((value: boolean) => {
+    initDb().then((value: boolean) => {
       SplashScreen.hideAsync();
-    })
-  }, [])
+    });
+  }, []);
 
   return (
     <ContextProvider>
@@ -65,7 +64,19 @@ export default function App() {
               };
             }}
           />
-          <RootStack.Screen component={PostDetails} name='PostDetails' />
+          <RootStack.Screen
+            component={PostDetails}
+            name='PostDetails'
+            options={{
+              headerTransparent: true,
+              headerStyle: {
+                backgroundColor:
+                  Platform.OS === 'ios' ? 'transparent' : COLORS.dark500,
+              },
+              headerBlurEffect: 'dark',
+              headerBackTitleVisible: false,
+            }}
+          />
           <RootStack.Screen
             component={AddNewPost}
             name='AddNewPost'

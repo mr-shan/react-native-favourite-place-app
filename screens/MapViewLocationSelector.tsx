@@ -16,7 +16,8 @@ interface IProps {
 }
 
 const MapViewLocationSelector = (props: IProps) => {
-  const coordinate = props.route.params?.coordinates
+  const coordinate = props.route.params?.coordinates;
+  const isReadOnly = props.route.params?.readOnly;
 
   const [zoomLevel, setZoomLevel] = useState(20);
   const [mapRef, setMapRef] = useState<MapView | null>(null);
@@ -28,6 +29,7 @@ const MapViewLocationSelector = (props: IProps) => {
   const selectLocationHandler = (
     event: MapPressEvent | MarkerDragStartEndEvent
   ) => {
+    if (isReadOnly) return; 
     setSelectedLocation(event.nativeEvent.coordinate);
   };
   const finishLocation = () => {
@@ -65,6 +67,13 @@ const MapViewLocationSelector = (props: IProps) => {
   } as Region;
 
   useLayoutEffect(() => {
+    if (isReadOnly) {
+      props.navigation.setOptions({
+        title: 'Location Details',
+      })
+      return;
+    };
+
     props.navigation.setOptions({
       headerRight: (props) => (
         <IconButton
@@ -89,7 +98,8 @@ const MapViewLocationSelector = (props: IProps) => {
 
       >
         <Marker
-          draggable
+          title='This is you'
+          draggable={!isReadOnly}
           coordinate={selectedLocation}
           onDragEnd={selectLocationHandler}
         />
